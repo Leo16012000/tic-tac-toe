@@ -115,7 +115,7 @@ const toggleCurrentTurn = () => {
 
 const handleCellClick = (e, idx) => {
   const element = e.target;
-  // console.log(element, idx);
+  
 
   // Prevent clicking on cell having value
   if (element.classList.length > 0) return;
@@ -176,7 +176,27 @@ $(document).ready(function(){
   // console.log(matrix)
   $('#replayGame button').on('click', function(){
     location.reload();
-  })
+  });
+
+  $('.log-out').on('click', function(){
+
+    location.reload();
+  });
+
+  $.post( "/").done(function(data){
+    inn = ``;
+    for(let i = 0; i < data.length; i++){
+      inn += `
+        <tr>
+          <td>`+data.name+`</td>
+          <td>`+data.score+`</td>
+        </tr>
+      `
+    }
+    
+    $('table').append(inn);
+  });
+
 })
 
 
