@@ -16,6 +16,7 @@ const winCondition = [
 ];
 
 function winCheck(tableArray) {
+  // 1 win
   if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
     return true;
   else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
@@ -32,10 +33,8 @@ function winCheck(tableArray) {
     return true;
   else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
     return true;
-  return false;
-}
-function winCheck(tableArray) {
-  if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+  // 2 win
+  else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
     return true;
   else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
     return true;
@@ -51,6 +50,8 @@ function winCheck(tableArray) {
     return true;
   else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
     return true;
+  return false;
+
   return false;
 }
 
