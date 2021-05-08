@@ -4,8 +4,8 @@ let app = express();
 const bodyParser = require( "body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
+const session = require('express-session');
+const db = require("./db")
 //var cors = require('cors');
 
 const hostname = "127.0.0.1";
@@ -36,15 +36,58 @@ function winCheck(tableArray, player) {
   return false;
 }
 
+
+// app.use(async function(req, res, next){
+//   if(!req.cookies.myck){
+//     return res.redirect('client/login.html')
+//   }
+// })
+
 app.get('/', (req, res)=> {
-  res.render(__dirname + 'index.html')
+
+  let ck = req.cookies.myck;
+  let arr = ck.split('-');
+  let username = arr[0];
+  let password = arr[1];
+  const user = await db.loaduser(username, password);
+  if(user === null){
+    return res.render(
+      __dirname + "/client/login.html"
+    )
+  }
+  res.render(__dirname + '/client/index.html')
 })
 
+app.get("/login", (req, res)=>{
+  res.render(__dirname + '/client/login.html')
+})
+app.post('/login', async (req, res)=>{
+  const user = await db.loaduser(req.body.username, req.body.password);
+
+  if(user === null){
+    return res.send("wrong")
+  }
+  
+  res.cookie('myck', req.body.username + '-' + req.body.password);
+  res.redirect("/");
+
+ 
+})
+
+app.get("/signup", (req, res)=>{
+  res.render(__dirname + 'client/signup.html')
+})
+app.post("/signup",async (req, res)=>{
+
+  await db.adduser(req.body.username, req.body.password);
+  res.cookie('myck', req.body.username + '-' + req.body.password);
+  res.redirect("/");
+})
 app.post('/array', (req, res)=>{
-  let array = JSON.parse(req.body.array);
-  //let user = req.body.user;
-  let isWin = winCheck(array, 1) || winCheck(array, 2);
-  res.json(isWin);
+  console.log(JSON.parse(req.body));
+  // let array = JSON.parse(req.body.array);
+  // let isWin = winCheck(array, 1) || winCheck(array, 2);
+  // res.json(isWin);
 
 })
 
