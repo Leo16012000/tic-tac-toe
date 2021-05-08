@@ -41,13 +41,15 @@ app.get('/', (req, res)=> {
 })
 
 app.post('/array', (req, res)=>{
-  let array = JSON.parse(req.body.array);
+  let array = JSON.parse('['+req.body.array.toString()+']');
+  
   //let user = req.body.user;
   let isWin = winCheck(array, 1) || winCheck(array, 2);
   res.json(isWin);
-
+  console.log(isWin);
 })
 
 var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+

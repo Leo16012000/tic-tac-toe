@@ -145,10 +145,11 @@ const handleCellClick = (e, idx) => {
 
   $.post( "/array", { array: cellValues}).done(function(isWin){
 
+    console.log(isWin);
     if(isWin){
       $('.game-replay').css({'display': 'block'});
       let text = '';
-      currentTurn === TURN.CROSS ? text="X Thắng !!!" : text="O Thắng !!!";
+      currentTurn === TURN.CROSS ? text="O Thắng !!!" : text="X Thắng !!!";
       $('.game-replay p').html(text);
     }
     else{
@@ -171,8 +172,12 @@ cellElementList.forEach((element, idx) => {
 })
 
 
-// console.log(matrix)
-
+$(document).ready(function(){
+  // console.log(matrix)
+  $('#replayGame button').on('click', function(){
+    location.reload();
+  })
+})
 
 
 
