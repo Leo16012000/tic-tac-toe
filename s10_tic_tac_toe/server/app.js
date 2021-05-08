@@ -15,6 +15,45 @@ const winCondition = [
   [6, 7, 8],
 ];
 
+function winCheck(tableArray) {
+  if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+    return true;
+  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+    return true;
+  else if (tableArray[2] === 1 && tableArray[4] === 1 && tableArray[6] === 1)
+    return true;
+  else if (tableArray[0] === 1 && tableArray[3] === 1 && tableArray[6] === 1)
+    return true;
+  else if (tableArray[1] === 1 && tableArray[4] === 1 && tableArray[7] === 1)
+    return true;
+  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+    return true;
+  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+    return true;
+  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+    return true;
+  return false;
+}
+function winCheck(tableArray) {
+  if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+    return true;
+  else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
+    return true;
+  else if (tableArray[2] === 2 && tableArray[4] === 2 && tableArray[6] === 2)
+    return true;
+  else if (tableArray[0] === 2 && tableArray[3] === 2 && tableArray[6] === 2)
+    return true;
+  else if (tableArray[1] === 2 && tableArray[4] === 2 && tableArray[7] === 2)
+    return true;
+  else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
+    return true;
+  else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
+    return true;
+  else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
+    return true;
+  return false;
+}
+
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain");
