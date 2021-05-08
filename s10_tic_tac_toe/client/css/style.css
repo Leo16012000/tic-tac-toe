@@ -202,14 +202,20 @@ table {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
   
 }
-
-td, th {
+thead tr, th{
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  padding-left: 20px;
+  background-color: rgba(53, 53, 78, 0.199);
+}
+tbody td,tbody tr {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
   padding-left: 20px;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
+tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
 }
