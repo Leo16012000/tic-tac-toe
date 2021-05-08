@@ -19,7 +19,7 @@ function winCheck(tableArray) {
   // 1 win
   if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
     return true;
-  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+  else if (tableArray[6] === 1 && tableArray[7] === 1 && tableArray[8] === 1)
     return true;
   else if (tableArray[2] === 1 && tableArray[4] === 1 && tableArray[6] === 1)
     return true;
@@ -27,11 +27,11 @@ function winCheck(tableArray) {
     return true;
   else if (tableArray[1] === 1 && tableArray[4] === 1 && tableArray[7] === 1)
     return true;
-  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+  else if (tableArray[2] === 1 && tableArray[5] === 1 && tableArray[8] === 1)
     return true;
-  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+  else if (tableArray[0] === 1 && tableArray[1] === 1 && tableArray[2] === 1)
     return true;
-  else if (tableArray[0] === 1 && tableArray[4] === 1 && tableArray[8] === 1)
+  else if (tableArray[3] === 1 && tableArray[4] === 1 && tableArray[5] === 1)
     return true;
   // 2 win
   else if (tableArray[0] === 2 && tableArray[4] === 2 && tableArray[8] === 2)
