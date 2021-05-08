@@ -12,12 +12,13 @@ $(document).ready(function(){
             console.log(isLogin);
             
             if(isLogin == 'wrong'){
-                $('.note-error').html('');
+                $('.note-error').html('Tên đăng nhập hoặc mật khẩu bạn nhập không đúng.');
                 console.log('oke');
             }
             else{
                 $('.note-error').html('Tên đăng nhập hoặc mật khẩu bạn nhập không đúng.')
             }
+
         });
    });
    
