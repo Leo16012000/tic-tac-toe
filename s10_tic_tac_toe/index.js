@@ -5,6 +5,8 @@ const bodyParser = require( "body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 const db = require("./db")
 //var cors = require('cors');
 
@@ -43,7 +45,7 @@ function winCheck(tableArray, player) {
 //   }
 // })
 
-app.get('/', (req, res)=> {
+app.get('/', async (req, res)=> {
 
   let ck = req.cookies.myck;
   let arr = ck.split('-');
@@ -67,9 +69,9 @@ app.post('/login', async (req, res)=>{
   if(user === null){
     return res.send("wrong")
   }
-  
+  res.json(user);
   res.cookie('myck', req.body.username + '-' + req.body.password);
-  res.redirect("/");
+  //res.redirect("/");
 
  
 })
@@ -79,9 +81,15 @@ app.get("/signup", (req, res)=>{
 })
 app.post("/signup",async (req, res)=>{
 
-  await db.adduser(req.body.username, req.body.password);
-  res.cookie('myck', req.body.username + '-' + req.body.password);
-  res.redirect("/");
+  const entity = {
+    User: req.body.username,
+    Pass: req.body.password
+  }
+  await db.adduser(entity);
+  //res.cookie('myck', req.body.username + '-' + req.body.password);
+  const user = await db.loaduser(req.body.username, req.body.password);
+  res.json(user);
+  //res.redirect("/");
 })
 app.post('/array', (req, res)=>{
   console.log(JSON.parse(req.body));
@@ -90,6 +98,18 @@ app.post('/array', (req, res)=>{
   // res.json(isWin);
 
 })
+
+// app.post('/logout', async function(req, res){
+//   res.redirect("/");
+// })
+
+
+app.get("/api/rank", async (req, res)=>{
+  const row = await db.getListRank();
+  res.json(row);
+})
+
+
 
 var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);

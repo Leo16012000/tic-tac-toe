@@ -14,12 +14,30 @@ module.exports = {
             })
         })
     },
-    loaduser: function(username, password){
-        const rows = await db.load(`select * from ${TBL} where User = '${username}' and Pass ='${password}'`);
+    add: function(table, entity){
+        return new Promise(function(resolve, reject){
+            const sql = `insert into ${table} set ?`;
+            pool.query(sql, entity, function(error, result, fields){
+                if(error){
+                    return reject(error);
+                }
+
+                resolve(result);
+            })
+        })
+    },
+    loaduser: async function(username, password){
+
+        const rows = await this.load(`select * from ${TBL} where User = '${username}' and Pass ='${password}'`);
         if (rows.length === 0) return null;
         else return rows[0];
     },
-    adduser: function(username, password){
-        await db.load(`insert into ${table} value (${username},${password})`)
+    adduser: async function(entity){
+        return this.add(TBL, entity)
+    },
+    getListRank: async function(){
+        const rows = await this.load(`select ID_WinUser as username, count(*) as count from MatchHistory group by ID_WinUser order by count(*) desc`);
+        if (rows.length === 0) return null;
+        else return rows;
     }
 }
