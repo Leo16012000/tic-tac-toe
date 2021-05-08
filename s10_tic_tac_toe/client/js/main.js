@@ -28,7 +28,7 @@ const cellElementList = document.querySelectorAll('#cellList > li');
 
 
 /**
- * TODOs
+ * TODO
  *
  * 1. Bind click event for all cells
  * 2. On cell click, do the following:
