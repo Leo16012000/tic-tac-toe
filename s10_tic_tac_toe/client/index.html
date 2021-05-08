@@ -5,9 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Tic tac toe game</title>
+  <title>Caro game</title>
 
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -15,15 +16,15 @@
   <section class="game-page">
     <div class="game">
       <div class="chalk-board">
-        <img src="images/chalk-board-bg.jpg" alt="Chalk board">
+        
       </div>
 
       <div class="overlay-content">
-        <h1>Tic tac toe</h1>
+        <h1>Caro 3x3</h1>
 
         <div class="game-details">
           <p class="current-turn">
-            <span>Current turn: </span>
+            <span>Lượt đánh hiện tại: </span>
             <span id="currentTurn" class="cross"></span>
           </p>
         </div>
@@ -43,7 +44,7 @@
         </div>
 
         <div id="replayGame" class="game-replay">
-          <p>WIN!!!</p>
+          <p>Thắng!!!</p>
           <button>Replay</button>
         </div>
       </div>

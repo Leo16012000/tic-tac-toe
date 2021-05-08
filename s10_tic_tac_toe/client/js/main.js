@@ -2,6 +2,9 @@
 /**
  * Global variables
  */
+
+// ma tran 3x3
+
 const CELL_VALUE = {
   CROSS: 'X',
   CIRCLE: 'O',
@@ -20,7 +23,7 @@ const TURN = {
 };
 let currentTurn = 'cross';
 let isGameEnded = false;
-let cellValues = Array.from(new Array(9).keys()).map(() => '');
+let cellValues = Array.from(new Array(9).keys()).map(() => 0);
 const cellElementList = document.querySelectorAll('#cellList > li');
 
 
@@ -112,7 +115,7 @@ const toggleCurrentTurn = () => {
 
 const handleCellClick = (e, idx) => {
   const element = e.target;
-  console.log(element, idx);
+  // console.log(element, idx);
 
   // Prevent clicking on cell having value
   if (element.classList.length > 0) return;
@@ -121,13 +124,13 @@ const handleCellClick = (e, idx) => {
   element.classList.add(currentTurn);
 
   // Update cell value
-  cellValues[idx] = currentTurn === TURN.CROSS ? CELL_VALUE.CROSS : CELL_VALUE.CIRCLE;
+  cellValues[idx] = currentTurn === TURN.CROSS ? 2 : 1;
 
   toggleCurrentTurn();
 
   // Check game status
   const result = checkGameStatus(cellValues);
-  console.log(result);
+  // console.log(result);
   // if (result.status === GAME_STATUS.X_WIN || result.status === GAME_STATUS.O_WIN) {}
 
   if ([GAME_STATUS.X_WIN, GAME_STATUS.O_WIN].includes(result.status)) {
@@ -138,6 +141,26 @@ const handleCellClick = (e, idx) => {
       cellElementList[idx].classList.add(CELL_VALUE.WIN);
     })
   }
+
+
+  $.post( "/array", { array: cellValues}).done(function(isWin){
+
+    if(isWin){
+      $('.game-replay').css({'display': 'block'});
+      let text = '';
+      currentTurn === TURN.CROSS ? text="X Thắng !!!" : text="O Thắng !!!";
+      $('.game-replay p').html(text);
+    }
+    else{
+      if(cellValues.every(x=>x!==0)){
+        $('.game-replay').css({'display': 'block'});
+        $('.game-replay p').html("Hoà !!!");
+      }
+    }
+
+
+  });
+  
 }
 
 
@@ -148,7 +171,7 @@ cellElementList.forEach((element, idx) => {
 })
 
 
-
+// console.log(matrix)
 
 
 
