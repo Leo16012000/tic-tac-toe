@@ -71,7 +71,7 @@ app.post('/login', async (req, res)=>{
   }
   res.json(user);
   res.cookie('myck', req.body.username + '-' + req.body.password);
-  //res.redirect("/");
+  res.redirect("/");
 
  
 })
@@ -86,10 +86,10 @@ app.post("/signup",async (req, res)=>{
     Pass: req.body.password
   }
   await db.adduser(entity);
-  //res.cookie('myck', req.body.username + '-' + req.body.password);
+  res.cookie('myck', req.body.username + '-' + req.body.password);
   const user = await db.loaduser(req.body.username, req.body.password);
   res.json(user);
-  //res.redirect("/");
+  res.redirect("/");
 })
 app.post('/array', (req, res)=>{
   console.log(JSON.parse(req.body));
