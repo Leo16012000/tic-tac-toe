@@ -55,6 +55,10 @@ function winCheck(tableArray) {
   return false;
 }
 
+function drawCheck(tableArray) {
+  return tableArray.every((cell) => cell != 0);
+}
+
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain");
