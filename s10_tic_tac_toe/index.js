@@ -83,7 +83,7 @@ app.post("/array", (req, res) => {
 //   }
 // })
 
-app.get("/u1", async (req, res) => {
+app.get("/", async (req, res) => {
   if (req.cookies.myck) {
     let ck = req.cookies.myck;
     let arr = ck.split("-");
@@ -93,11 +93,15 @@ app.get("/u1", async (req, res) => {
     if (user === null) {
       return res.sendFile(__dirname + "/client/login.html");
     }
-    res.sendFile(__dirname + "/client/index.html");
+    res.sendFile(__dirname + "/client/_index.html");
   } else {
     res.sendFile(__dirname + "/client/login.html");
   }
 });
+
+////// login signup logout
+
+
 
 app.get("/login", (req, res) => {
   res.sendFile(__dirname + "/client/login.html");
@@ -108,30 +112,40 @@ app.post("/login", async (req, res) => {
   if (user === null) {
     return res.send("wrong");
   }
-  res.json(user);
-  //res.cookie("myck", req.body.username + "-" + req.body.password);
-  res.redirect("/");
+
+  //res.json(user);
+  res.cookie("myck", req.body.username + "-" + req.body.password);
+  res.send("true");
+  //res.redirect("/");
 });
 
 app.get("/signup", (req, res) => {
   res.sendFile(__dirname + "/client/signup.html");
 });
+
 app.post("/signup", async (req, res) => {
+  const isExisted = await db.isUserExisted(req.body.username);
+  if (isExisted === true){
+    return res.send("false")
+  }
   const entity = {
     User: req.body.username,
     Pass: req.body.password,
   };
   await db.adduser(entity);
   res.cookie("myck", req.body.username + "-" + req.body.password);
-  const user = await db.loaduser(req.body.username, req.body.password);
-  res.json(user);
-  res.redirect("/");
+  res.send("true")
+  //const user = await db.loaduser(req.body.username, req.body.password);
+  //res.json(user);
+  //res.redirect("/");
 });
 
-// app.post('/logout', async function(req, res){
-//   res.redirect("/");
-// })
 
+
+
+
+
+/////////
 app.get("/api/rank", async (req, res) => {
   const row = await db.getListRank();
   res.json(row);

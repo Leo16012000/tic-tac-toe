@@ -27,10 +27,14 @@ module.exports = {
         })
     },
     loaduser: async function(username, password){
-
         const rows = await this.load(`select * from ${TBL} where User = '${username}' and Pass ='${password}'`);
         if (rows.length === 0) return null;
         else return rows[0];
+    },
+    isUserExisted: async function(username){
+        const rows = await this.load(`select * from ${TBL} where User = '${username}'`);
+        if (rows.length === 0) return false;
+        else return true;
     },
     adduser: async function(entity){
         return this.add(TBL, entity)

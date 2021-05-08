@@ -192,7 +192,7 @@ $(document).ready(function(){
   });
 
   $('.log-out').on('click', function(){
-
+    document.cookie = "myck= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
     location.reload();
   });
 
