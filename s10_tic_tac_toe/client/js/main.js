@@ -113,9 +113,11 @@ const toggleCurrentTurn = () => {
   }
 }
 
+var isEnd = false;
 const handleCellClick = (e, idx) => {
+  if(isEnd) return;
   const element = e.target;
-  // console.log(element, idx);
+  
 
   // Prevent clicking on cell having value
   if (element.classList.length > 0) return;
@@ -151,11 +153,15 @@ const handleCellClick = (e, idx) => {
       let text = '';
       currentTurn === TURN.CROSS ? text="O Thắng !!!" : text="X Thắng !!!";
       $('.game-replay p').html(text);
+      isEnd = true;
+      return;
     }
     else{
       if(cellValues.every(x=>x!==0)){
         $('.game-replay').css({'display': 'block'});
         $('.game-replay p').html("Hoà !!!");
+        isEnd = true;
+        return;
       }
     }
 
@@ -174,9 +180,36 @@ cellElementList.forEach((element, idx) => {
 
 $(document).ready(function(){
   // console.log(matrix)
+  inn = `
+        <tr>
+          <td>data.name</td>
+          <td>data.score</td>
+        </tr>
+      `
+  $('table tbody').append(inn);
   $('#replayGame button').on('click', function(){
     location.reload();
-  })
+  });
+
+  $('.log-out').on('click', function(){
+
+    location.reload();
+  });
+
+  $.post( "/").done(function(data){
+    inn = ``;
+    for(let i = 0; i < data.length; i++){
+      inn += `
+        <tr>
+          <td>`+data.name+`</td>
+          <td>`+data.score+`</td>
+        </tr>
+      `
+    }
+    
+    $('table tbody').append(inn);
+  });
+
 })
 
 

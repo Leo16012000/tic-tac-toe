@@ -17,10 +17,11 @@ ul {
 .game-page {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 
-  padding: 1rem;
+
+  padding: 2rem;
   min-height: 100vh;
   background: #EEEEEE;
 }
@@ -30,6 +31,7 @@ ul {
   display: inline-block;
   color: white;
   text-align: center;
+  margin-left: 100px;
 }
 
 .chalk-board {
@@ -69,6 +71,7 @@ ul {
   height: 420px;
   background-color: rgb(53, 53, 78);
   border-radius: 9px;
+  /* margin-left: 20%; */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -196,4 +199,56 @@ ul {
   font-weight: bold;
   margin-top: 4px;
   cursor: pointer;
+}
+
+button {
+
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.log-out {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  border-radius: 5px;
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f53c2f;
+  color: white;
+}
+table {
+  position: absolute;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 35%;
+  right: 3%;
+  top: 18%;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
+  
+}
+thead tr, th{
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  padding-left: 20px;
+  background-color: rgba(53, 53, 78, 0.199);
+}
+tbody td,tbody tr {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  padding-left: 20px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
 }
