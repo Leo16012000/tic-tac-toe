@@ -40,7 +40,7 @@ module.exports = {
         return this.add(TBL, entity)
     },
     getListRank: async function(){
-        const rows = await this.load(`select ID_WinUser as username, count(*) as count from MatchHistory group by ID_WinUser order by count(*) desc`);
+        const rows = await this.load('CALL getListByRank()');
         if (rows.length === 0) return null;
         else return rows;
     }

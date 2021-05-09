@@ -99,7 +99,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-////// login signup logout
+////// login signup
 
 
 
@@ -146,10 +146,21 @@ app.post("/signup", async (req, res) => {
 
 
 /////////
-app.get("/api/rank", async (req, res) => {
+app.get("/api/winrate", async (req, res) => {
   const row = await db.getListRank();
-  res.json(row);
+  res.json(row[0]);
 });
+
+app.get("/api/getlistrank", async(req, res)=>{
+  let row = await db.getListRank();
+  let rank = row[0].map((obj, index)=>{
+    let rObj = {};
+    rObj['username'] = obj.User;
+    rObj['rank'] = index + 1;
+    return rObj;
+  })
+  res.json(rank);
+})
 
 var listener = app.listen(3000, function () {
   console.log("Your app is listening on port " + listener.address().port);
