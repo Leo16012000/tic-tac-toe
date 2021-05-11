@@ -1,6 +1,10 @@
 /* Full-width input fields */
-body {font-family: Arial, Helvetica, sans-serif;}
-input[type=text], input[type=password] {
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eeeeee;
+}
+input[type="text"],
+input[type="password"] {
     width: 100%;
     padding: 12px 20px;
     margin: 15px 0;
@@ -9,7 +13,7 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-button[type="submit"]{
+button[type="submit"] {
     font-size: 17px;
 }
 /* Set a style for all buttons */
@@ -57,7 +61,6 @@ span.psw {
     overflow: auto; /* Enable scroll if needed */
     padding-top: 60px;
     border: none;
-    
 }
 
 /* Modal Content/Box */
@@ -88,30 +91,38 @@ span.psw {
 /* Add Zoom Animation */
 .animate {
     -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
+    animation: animatezoom 0.6s;
 }
 
 @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
-    to {-webkit-transform: scale(1)}
+    from {
+        -webkit-transform: scale(0);
+    }
+    to {
+        -webkit-transform: scale(1);
+    }
 }
 
 @keyframes animatezoom {
-    from {transform: scale(0)} 
-    to {transform: scale(1)}
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
-span.psw {
-    display: block;
-    float: none;
+    span.psw {
+        display: block;
+        float: none;
+    }
+    .cancelbtn {
+        width: 100%;
+    }
 }
-.cancelbtn {
-    width: 100%;
-}
-}
-.note-error{
+.note-error {
     color: #f02849;
     margin-bottom: 7px;
     font-size: 14px;

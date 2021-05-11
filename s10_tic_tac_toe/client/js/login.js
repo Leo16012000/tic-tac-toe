@@ -16,7 +16,7 @@ $(document).ready(function () {
                 console.log('oke');
             }
             else {
-                window.location.href = "/";
+                window.location.href = "/room.html";
             }
 
         });
