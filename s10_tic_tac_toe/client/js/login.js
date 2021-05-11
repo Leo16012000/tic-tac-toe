@@ -1,28 +1,28 @@
-$(document).ready(function(){
-    $('.modal-content').on('click', '.container button', function(e){
-         e.preventDefault();
-         
-         let usr = document.getElementById('usr').value;
- 
-         let psw = document.getElementById('psw').value;
- 
-        
-         $.post( "/login", { username: usr, password: psw}).done(function(isLogin){
- 
-             console.log(isLogin);
-             
-             if(isLogin == 'wrong'){
-                 $('.note-error').html('Tên đăng nhập hoặc mật khẩu bạn nhập không đúng.');
-                 console.log('oke');
-             }
-             else{
+$(document).ready(function () {
+    $('.modal-content').on('click', '.container button', function (e) {
+        e.preventDefault();
+
+        let usr = document.getElementById('usr').value;
+
+        let psw = document.getElementById('psw').value;
+
+
+        $.post("/login", { username: usr, password: psw }).done(function (isLogin) {
+
+            console.log(isLogin);
+
+            if (isLogin == 'wrong') {
+                $('.note-error').html('Tên đăng nhập hoặc mật khẩu bạn nhập không đúng.');
+                console.log('oke');
+            }
+            else {
                 window.location.href = "/";
-             }
- 
-         });
+            }
+
+        });
     });
-    
-    $('#id01 .registerbtn').on('click', function(){
+
+    $('#id01 .registerbtn').on('click', function () {
         $('.modal-content').html(`
          <div class="container">
          <label for="uname"><b>Tên đăng nhập</b></label>
@@ -35,22 +35,22 @@ $(document).ready(function(){
          </div>
         `)
     })
- 
-    $('.modal').on('click', '#submitRegister', function(){
-     e.preventDefault();
-         
-     let usr = document.getElementById('usr').value;
- 
-     let psw = document.getElementById('psw').value;
- 
-     $.post( "/signup", { username: usr, password: psw}).done(function(isRegister){
- 
-         console.log(isRegister);
-         
-         if(isRegister){
-             console.log('oke');
-         }
- 
-     });
+
+    $('.modal').on('click', '#submitRegister', function (e) {
+        e.preventDefault();
+
+        let usr = document.getElementById('usr').value;
+
+        let psw = document.getElementById('psw').value;
+
+        $.post("/signup", { username: usr, password: psw }).done(function (isRegister) {
+
+            console.log(isRegister);
+
+            if (isRegister) {
+                window.location.href = "/";
+            }
+
+        });
     })
- });
+});
