@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Caro game</title>
+  <title>TicTacToe game</title>
 
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -17,21 +17,23 @@
 
   
   <section class="game-page">
+    <button class="out-room">Rời phòng</button>
     <button class="log-out">Đăng xuất</button>
+    <h1 class="room-name"></h1>
     <div class="game">
       <div class="chalk-board">
         <div class="name-player-1">
-          <div class="name-player-1__title">Player 1: </div>
-          <div class="name-player-1__name">user1</div>
+          <div class="name-player-1__title"></div>
+          <div class="name-player-1__name"></div>
         </div>
         <div class="name-player-2">
-          <div class="name-player-2__title">Player 2: </div>
-          <div class="name-player-2__name">user2</div>
+          <div class="name-player-2__title"></div>
+          <div class="name-player-2__name"></div>
         </div>
       </div>
 
       <div class="overlay-content">
-        <h1>Caro 3x3</h1>
+        <h1>Tic-Tac-Toe</h1>
 
         <div class="game-details">
           <p class="current-turn">
@@ -61,23 +63,13 @@
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Tên</th>
-          <th>Điểm</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>N</td>
-          <td>1024</td>
-        </tr>
-      </tbody>
-  
-      
+    <div class="rule">
+      <h1>Luật chơi</h1>
+      <p> - Hai người chơi lần lượt thực hiện lượt đánh của mình</p>
+      <p> - Người chơi được xem là thắng khi thực hiện được lượt đánh trên một hàng/ cột/ đường chéo</p>
+      <p> - Trận đấu có kết quả "Hòa" khi đã hết ô để đánh nhưng không có người chơi nào thắng</p>
+    </div>
 
-    </table>
   </section>
 
   <script src="js/main.js"></script>

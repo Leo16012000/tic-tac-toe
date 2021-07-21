@@ -5,16 +5,34 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const db = require("./db");
 const cors = require("cors");
-
-var http = require("http").Server(app);
-var io = require("socket.io")(http);
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+  play,
+  resetRoom,
+  isEmptyRoom,
+  isFullRoom,
+} = require("./utils/users");
+app.use(cors());
+var io = require("socket.io")(
+  app.listen(3000, function () {
+    console.log("Your app is listening on port " + 3000);
+  }),
+  {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  }
+);
 
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
-app.use(cors());
 
 const winCondition = [{}];
 var users = [];
@@ -22,72 +40,17 @@ var rooms = { 1: { players: [], array: Array(9).fill(-1) } };
 
 app.use(express.static("client"));
 
-function winCheck(tableArray, player) {
-  if (
-    tableArray[0] == player &&
-    tableArray[4] == player &&
-    tableArray[8] == player
-  )
-    return true;
-  else if (
-    tableArray[2] === player &&
-    tableArray[4] === player &&
-    tableArray[6] === player
-  )
-    return true;
-  else if (
-    tableArray[0] === player &&
-    tableArray[3] === player &&
-    tableArray[6] === player
-  )
-    return true;
-  else if (
-    tableArray[1] === player &&
-    tableArray[4] === player &&
-    tableArray[7] === player
-  )
-    return true;
-  else if (
-    tableArray[2] === player &&
-    tableArray[5] === player &&
-    tableArray[8] === player
-  )
-    return true;
-  else if (
-    tableArray[0] === player &&
-    tableArray[1] === player &&
-    tableArray[2] === player
-  )
-    return true;
-  else if (
-    tableArray[3] === player &&
-    tableArray[4] === player &&
-    tableArray[5] === player
-  )
-    return true;
-  else if (
-    tableArray[6] === player &&
-    tableArray[7] === player &&
-    tableArray[8] === player
-  )
-    return true;
-  return false;
-}
-
-app.post("/array", (req, res) => {
-  let array = JSON.parse("[" + req.body.array.toString() + "]");
-  let isWin = winCheck(array, 1) || winCheck(array, 2);
-  res.json(isWin);
-  console.log(isWin);
-});
-
 // app.use(async function(req, res, next){
 //   if(!req.cookies.myck){
 //     return res.redirect('client/login.html')
 //   }
 // })
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
+  res.redirect("/play");
+});
+
+app.get("/play", async (req, res) => {
   if (req.cookies.myck) {
     let ck = req.cookies.myck;
     let arr = ck.split("-");
@@ -98,6 +61,10 @@ app.get("/", async (req, res) => {
       return res.redirect("/login");
     }
     res.sendFile(__dirname + "/client/_index.html");
+
+    if (!req.query.room || isFullRoom(req.query.room)) {
+      return res.redirect("/room");
+    }
   } else {
     res.redirect("/login");
   }
@@ -115,8 +82,6 @@ app.post("/login", async (req, res) => {
     return res.send("wrong");
   }
 
-  console.log(user);
-
   //res.json(user);
   res.cookie("myck", req.body.username + "-" + req.body.password);
   res.send("true");
@@ -133,8 +98,8 @@ app.post("/signup", async (req, res) => {
     return res.send("false");
   }
   const entity = {
-    User: req.body.username,
-    Pass: req.body.password,
+    username: req.body.username,
+    password: req.body.password,
   };
   await db.adduser(entity);
   res.cookie("myck", req.body.username + "-" + req.body.password);
@@ -144,54 +109,80 @@ app.post("/signup", async (req, res) => {
   //res.json(user);
 });
 
-/////////
-app.get("/api/winrate", async (req, res) => {
-  const row = await db.getListRank();
-  res.json(row[0]);
-});
-
-app.get("/api/getlistrank", async (req, res) => {
-  let row = await db.getListRank();
-  console.log(row);
-  let rank = row[0].map((obj, index) => {
-    let rObj = {};
-    rObj["username"] = obj.User;
-    rObj["rank"] = index + 1;
-    return rObj;
-  });
-  res.json(rank);
+app.get("/room", async (req, res) => {
+  if (req.cookies.myck) {
+    let ck = req.cookies.myck;
+    let arr = ck.split("-");
+    let username = arr[0];
+    let password = arr[1];
+    const user = await db.loaduser(username, password);
+    if (user === null) {
+      return res.redirect("/login");
+    }
+    res.sendFile(__dirname + "/client/room.html");
+  } else {
+    res.redirect("/login");
+  }
 });
 
 io.on("connection", (socket) => {
-  console.log("Oh connection... ", socket.id);
-  socket.on("username", (username) => {
-    if (users.every((x) => x.username !== username))
-      users.push({ username: username, id: socket.id });
-    else users.find((x) => x.username === username).id = socket.id;
-    console.log(username);
+  socket.on("joinRoom", ({ username, room }) => {
+    const user = userJoin(socket.id, username, room);
 
-    if (rooms["1"].players.length === 2)
-      rooms["1"] = { players: [], array: Array(9).fill(-1) };
-    rooms["1"].players.push(username);
-    let userIndex = rooms["1"].players.indexOf(username);
-    socket.emit("userIndex", userIndex);
+    socket.join(user.room);
+
+    // Welcome current user
+    socket.emit("tick", user.tick);
+
+    // Broadcast when a user connects
+    socket.broadcast
+      .to(user.room)
+      .emit("message", `${user.username} has joined room`);
+
+    // Send users and room info
+    io.to(user.room).emit("roomUsers", {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
   });
-  socket.on("hit", (data) => {
-    let { username, index } = data;
-    let userIndex = rooms["1"].players.indexOf(username);
-    rooms["1"].array[index] = userIndex;
 
-    socket.broadcast.emit("fill", index);
-    if (winCheck(rooms["1"].array, userIndex))
-      io.emit("result", username + " THẮNG !!!");
-    if (rooms["1"].array.every((x) => x !== -1)) io.emit("result", "HÒA !!!");
+  socket.on("hit", ({ index }) => {
+    const user = getCurrentUser(socket.id);
+    socket.broadcast.to(user.room).emit("hit", index);
+
+    let message = play(socket.id, index);
+    if (message) {
+      io.to(user.room).emit("result", message);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    const user = userLeave(socket.id);
+
+    if (user) {
+      // Send users and room info
+      io.to(user.room).emit("roomUsers", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+
+      if (!isEmptyRoom(user.room)) {
+        io.to(user.room).emit("result", `You WIN !`);
+      }
+
+      io.to(user.room).emit("roomUsers", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+      resetRoom(user.room);
+    }
+  });
+
+  socket.on("end", () => {
+    socket.disconnect();
   });
 });
 
-// app.listen(3000, function () {
-//   console.log("Your app is listening on port " + 3000);
+// http.listen(3000, () => {
+//   console.log("Your server is listening on port " + 3000);
 // });
-
-http.listen(3000, () => {
-  console.log("Your server is listening on port " + 3000);
-});

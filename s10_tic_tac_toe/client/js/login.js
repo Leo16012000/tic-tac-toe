@@ -11,7 +11,7 @@ $(document).ready(function () {
         $(".note-error").html(
           "Tên đăng nhập hoặc mật khẩu bạn nhập không đúng."
         );
-      } else location.replace("/");
+      } else location.replace("/room");
     });
   });
 

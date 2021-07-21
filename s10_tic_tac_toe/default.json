@@ -1,9 +1,9 @@
 {
     "mysql"     : {
         "host"     : "sql6.freemysqlhosting.net",
-        "user"     : "sql6411042",
-        "password" : "Yiu3uH3ZNd",
+        "user"     : "sql6426570",
+        "password" : "vD47GafFFl",
         "port" : 3306,
-        "database" : "sql6411042"
+        "database" : "sql6426570"
     }  
 }

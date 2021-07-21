@@ -7,6 +7,7 @@
 const marks = ["cross", "circle"];
 var index;
 var myTurn;
+var playable = false;
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -23,15 +24,18 @@ function getCookie(cname) {
   return "";
 }
 
+function switchTick() {
+  if ($("#currentTurn").hasClass(marks[0])) {
+    $("#currentTurn").removeClass(marks[0]).addClass(marks[1]);
+  } else {
+    $("#currentTurn").removeClass(marks[1]).addClass(marks[0]);
+  }
+}
+
 $(document).ready(function () {
-  // console.log(matrix)
-  inn = `
-        <tr>
-          <td>data.name</td>
-          <td>data.score</td>
-        </tr>
-      `;
-  $("table tbody").append(inn);
+  const username = getCookie("myck").split("-")[0];
+  const room = new URL(location.href).searchParams.get("room");
+
   $("#replayGame button").on("click", function () {
     location.reload();
   });
@@ -41,56 +45,66 @@ $(document).ready(function () {
     location.reload();
   });
 
-  $.post("/").done(function (data) {
-    inn = ``;
-    for (let i = 0; i < data.length; i++) {
-      inn +=
-        `
-        <tr>
-          <td>` +
-        data.name +
-        `</td>
-          <td>` +
-        data.score +
-        `</td>
-        </tr>
-      `;
+  $(".out-room").on("click", function () {
+    window.location.href = "/room";
+  });
+
+  var socket = io();
+
+  socket.emit("joinRoom", { username, room });
+
+  socket.on("message", (message) => {
+    alert(message);
+  });
+
+  socket.on("tick", (tick) => {
+    if (tick === "X") {
+      index = 0;
+      myTurn = true;
+    } else {
+      index = 1;
+      myTurn = false;
     }
-
-    $("table tbody").append(inn);
   });
 
-  var socket = io("http://localhost:3000");
-  socket.on("connection", () => {
-    console.log("Client connect");
+  socket.on("roomUsers", ({ room, users }) => {
+    $(".room-name").text(`Phòng ${room}`);
+
+    $(".name-player-1__title").text(users[0].tick);
+    $(".name-player-1__name").text(users[0].username);
+
+    if (users.length > 1) {
+      $(".name-player-2__title").text(users[1].tick);
+      $(".name-player-2__name").text(users[1].username);
+      playable = true;
+    } else {
+      $(".name-player-2__title").text("");
+      $(".name-player-2__name").text("");
+      playable = false;
+    }
   });
-  socket.emit("username", getCookie("myck").split("-")[0]);
-  socket.on("userIndex", (userIndex) => {
-    index = userIndex;
-    if (index === 0) myTurn = true;
-    else myTurn = false;
-  });
-  socket.on("fill", (cellIndex) => {
+
+  socket.on("hit", (cellIndex) => {
     let i = index === 0 ? 1 : 0;
     $("#cell" + cellIndex).addClass(marks[i]);
     myTurn = true;
+    switchTick();
   });
   socket.on("result", (message) => {
     $("#replayGame p").text(message);
     $("#replayGame").css("display", "block");
+    socket.emit("end");
   });
 
   $("#cellList li").on("click", function (e) {
+    if (!playable) return;
     if (!myTurn) return;
     if ($(this).hasClass(marks[0]) || $(this).hasClass(marks[1])) return;
     $(this).addClass(marks[index]);
     let i = parseInt(e.target.id.replace("cell", ""));
-    socket.emit("hit", { username: getCookie("myck").split("-")[0], index: i });
+    socket.emit("hit", { index: i });
+    switchTick();
     myTurn = false;
-  });
-
-  $("#replayGame button").on("click", function () {
-    location.reload();
   });
 });
 

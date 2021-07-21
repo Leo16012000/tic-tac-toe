@@ -26,12 +26,22 @@ ul {
   background: #EEEEEE;
 }
 
-.game {
+.game, .rule {
   position: relative;
   display: inline-block;
   color: white;
   text-align: center;
   margin-left: 100px;
+}
+
+.rule {
+  opacity: 0.6;
+  color: #333;
+}
+
+.rule p {
+  text-align: left;
+  margin-top: 30px;
 }
 
 .chalk-board {
@@ -215,7 +225,7 @@ button:hover {
 }
 
 /* Extra styles for the cancel button */
-.log-out {
+.log-out, .out-room {
   position: absolute;
   top: 0;
   right: 30px;
@@ -225,30 +235,16 @@ button:hover {
   background-color: #f53c2f;
   color: white;
 }
-table {
-  position: absolute;
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 35%;
-  right: 3%;
-  top: 18%;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 16px 0 rgba(0, 0, 0, 0.19);
-  
-}
-thead tr, th{
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-  padding-left: 20px;
-  background-color: rgba(53, 53, 78, 0.199);
-}
-tbody td,tbody tr {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-  padding-left: 20px;
+
+.out-room {
+  left: 30px;
+  background-color: #756d48;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f5f5f5;
+.room-name {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
 }

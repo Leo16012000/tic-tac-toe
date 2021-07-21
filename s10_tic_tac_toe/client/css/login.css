@@ -1,6 +1,7 @@
 /* Full-width input fields */
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background: #eeeeee;
 }
 input[type="text"],
 input[type="password"] {
@@ -31,8 +32,7 @@ button:hover {
 }
 
 /* Extra styles for the cancel button */
-.registerbtn,
-.loginbtn {
+.registerbtn {
   width: auto;
   padding: 10px 18px;
   background-color: #f53c2f;
@@ -96,30 +96,30 @@ span.psw {
 
 @-webkit-keyframes animatezoom {
   from {
-    -webkit-transform: scale(0);
+      -webkit-transform: scale(0);
   }
   to {
-    -webkit-transform: scale(1);
+      -webkit-transform: scale(1);
   }
 }
 
 @keyframes animatezoom {
   from {
-    transform: scale(0);
+      transform: scale(0);
   }
   to {
-    transform: scale(1);
+      transform: scale(1);
   }
 }
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
   span.psw {
-    display: block;
-    float: none;
+      display: block;
+      float: none;
   }
   .cancelbtn {
-    width: 100%;
+      width: 100%;
   }
 }
 .note-error {

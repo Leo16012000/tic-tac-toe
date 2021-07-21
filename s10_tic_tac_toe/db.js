@@ -28,14 +28,14 @@ module.exports = {
   },
   loaduser: async function (username, password) {
     const rows = await this.load(
-      `select * from ${TBL} where User = '${username}' and Pass ='${password}'`
+      `select * from ${TBL} where username = '${username}' and password ='${password}'`
     );
     if (rows.length === 0) return null;
     else return rows[0];
   },
   isUserExisted: async function (username) {
     const rows = await this.load(
-      `select * from ${TBL} where User = '${username}'`
+      `select * from ${TBL} where username = '${username}'`
     );
     if (rows.length === 0) return false;
     else return true;
